@@ -2,7 +2,11 @@
 	基于Java实现的国密TLCP套件（GB/T 38636-2020）适用于各个版本安卓，简单修改后也可以用于其他JAVA应用
 
 # 用法
-	直接使用编译的aar或者源码嵌入自己的工程
+## Android
+	直接使用编译的aar
+
+## Java
+	提取aar中的jar，然后实现下安卓下面的Log和TextUtils.isEmpty(CharSequence string)即可
 	
 # 样例代码
 	private static final String[] TEST_HOST_URL = new String[]{
