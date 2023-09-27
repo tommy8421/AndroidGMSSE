@@ -1,6 +1,6 @@
 # AndroidGMSSE
 	基于Java实现的国密TLCP套件（GB/T 38636-2020）适用于各个版本安卓，简单修改后也可以用于其他JAVA应用
-	目前只实现了ECDHE_SM4_CBC_SM3和ECC_SM4_CBC_SM3，对应的GCM还没有实现（暂时不会），后续考虑参考Kona
+	目前只实现了ECC_SM4_CBC_SM3、ECC_SM4_GCM_SM3、ECDHE_SM4_CBC_SM3和ECDHE_SM4_GCM_SM3。
 # 用法
 ## Android
 	直接使用编译的aar
