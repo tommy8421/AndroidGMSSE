@@ -6,7 +6,10 @@
 	直接使用编译的aar
 
 ## Java
-	提取aar中的jar，然后实现下安卓下面的Log和TextUtils.isEmpty(CharSequence string)即可
+	提取aar中的jar
+## 日志模式
+	目前缺省日志是System.out输出，如需根据情况修改，实现接口Logger.ILogWriter，并调用
+	Logger.initialize(ILogWriter logWriter)进行设置
 	
 # 样例代码
 	private static final String[] TEST_HOST_URL = new String[]{
