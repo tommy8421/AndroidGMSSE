@@ -23,6 +23,15 @@
 	
 	private SSLSocketFactory initTestGMSSL() {
         try {
+		    Logger.initialize(new Logger.ILogWriter() {	// 可选
+                @Override
+                public int println(int priority, String tag, String msg) {
+                    if (priority >= Logger.DEBUG) {
+                        System.out.println(tag + msg);
+                    }
+                    return 0;
+                }
+            });
             GMProvider.setEnableLog(false);
             GMProvider.setCipherSuites(new GMCipherSuite[]{GMCipherSuite.ECDHE_SM4_CBC_SM3, GMCipherSuite.ECC_SM4_CBC_SM3});
 
