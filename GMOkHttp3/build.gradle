@@ -1,0 +1,67 @@
+apply plugin: 'java'
+//apply plugin: 'java-library'
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+group = 'com.larva'
+version = '3.12.14'
+description = 'OkHttp3 for TLCP(GB/T 38636-2020)'
+archivesBaseName = 'GMOkHttp3'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+buildDir = 'out/build'
+def releaseDir = 'Release'
+def verTemplateFile = 'src/main/java-templates/okhttp3/internal/Version.java'
+def verGenFile = 'src/main/java/okhttp3/internal/Version.java'
+
+// 根据模板文件生成Version.java文件
+tasks.register('genVersionFile') {
+    File templateFile = file(verTemplateFile)
+    File verFile = file(verGenFile)
+    String data = new String(templateFile.readBytes()).replace("\${project.version}" as CharSequence, version as CharSequence)
+    verFile.write(data)
+}
+compileJava.dependsOn(genVersionFile)
+compileJava.dependsOn(processResources)
+
+def ARTIFACT = "${archivesBaseName}-${version}.jar"
+tasks.register('copyArtifact', Copy) {
+    dependsOn jar
+    from "${buildDir}/${libsDirName}/${ARTIFACT}"
+    into "${releaseDir}"
+
+    doLast {
+        System.println("Copy : ${buildDir}/${libsDirName}/${ARTIFACT}")
+        System.println("To   : ${releaseDir}")
+    }
+}
+assemble.dependsOn(copyArtifact)
+
+tasks.register('deleteArtifact', Delete) {
+    delete "${releaseDir}/${ARTIFACT}"
+    delete "out"
+
+    doLast {
+        System.println("Delete : ${releaseDir}" + "/${ARTIFACT}")
+    }
+}
+clean.dependsOn(deleteArtifact)
+
+dependencies {
+    implementation 'com.squareup.okio:okio:1.15.0'
+
+    compileOnly 'org.conscrypt:conscrypt-openjdk-uber:1.4.0'
+    compileOnly 'org.robolectric:android-all:10-robolectric-5803371'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly 'org.codehaus.mojo:animal-sniffer-annotations:1.17'
+}
+
