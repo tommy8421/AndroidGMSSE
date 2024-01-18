@@ -98,6 +98,7 @@
             long p0 = System.currentTimeMillis();
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .sslSocketFactory(ssf, new TrustAll())
+					.connectionSpecs(Arrays.asList(ConnectionSpec.TLCP_TLS))
                     .build();
             Request request = new Request.Builder().url(hostUrl).get().build();
             long p1 = System.currentTimeMillis();
