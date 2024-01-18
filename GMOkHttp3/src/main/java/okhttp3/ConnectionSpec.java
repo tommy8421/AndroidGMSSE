@@ -55,11 +55,6 @@ public final class ConnectionSpec {
       CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
       CipherSuite.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
       CipherSuite.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,
-      // TLCP(GB/T 38636-2020)
-      CipherSuite.TLCP_ECC_SM4_CBC_SM3,
-      CipherSuite.TLCP_ECC_SM4_GCM_SM3,
-      CipherSuite.TLCP_ECDHE_SM4_CBC_SM3,
-      CipherSuite.TLCP_ECDHE_SM4_GCM_SM3,
   };
 
   // This is nearly equal to the cipher suites supported in Chrome 51, current as of 2016-05-25.
@@ -90,7 +85,10 @@ public final class ConnectionSpec {
       CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA,
       CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA,
       CipherSuite.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
-      // TLCP(GB/T 38636-2020)
+  };
+
+  // TLCP(GB/T 38636-2020)
+  private static final CipherSuite[] TLCP_CIPHER_SUITES = new CipherSuite[] {
       CipherSuite.TLCP_ECC_SM4_CBC_SM3,
       CipherSuite.TLCP_ECC_SM4_GCM_SM3,
       CipherSuite.TLCP_ECDHE_SM4_CBC_SM3,
@@ -100,21 +98,29 @@ public final class ConnectionSpec {
   /** A secure TLS connection assuming a modern client platform and server. */
   public static final ConnectionSpec RESTRICTED_TLS = new Builder(true)
       .cipherSuites(RESTRICTED_CIPHER_SUITES)
-      .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2, TlsVersion.TLCP_1_1)
+      .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2)
       .supportsTlsExtensions(true)
       .build();
 
   /** A modern TLS connection with extensions like SNI and ALPN available. */
   public static final ConnectionSpec MODERN_TLS = new Builder(true)
       .cipherSuites(APPROVED_CIPHER_SUITES)
-      .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0, TlsVersion.TLCP_1_1)
+      .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
       .supportsTlsExtensions(true)
+      .build();
+
+
+  // TLCP(GB/T 38636-2020) without TLS extensions
+  public static final ConnectionSpec TLCP_TLS = new Builder(true)
+      .cipherSuites(TLCP_CIPHER_SUITES)
+      .tlsVersions(TlsVersion.TLCP_1_1)
+      .supportsTlsExtensions(false)
       .build();
 
   /** A backwards-compatible fallback connection for interop with obsolete servers. */
   public static final ConnectionSpec COMPATIBLE_TLS = new Builder(true)
       .cipherSuites(APPROVED_CIPHER_SUITES)
-      .tlsVersions(TlsVersion.TLS_1_0, TlsVersion.TLCP_1_1)
+      .tlsVersions(TlsVersion.TLS_1_0)
       .supportsTlsExtensions(true)
       .build();
 

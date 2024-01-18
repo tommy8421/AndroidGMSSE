@@ -96,8 +96,11 @@
     private boolean testGMOkHttp(String hostUrl) {
         try {
             long p0 = System.currentTimeMillis();
+//          List<ConnectionSpec> specList = new ArrayList<>();
+//          specList.add(ConnectionSpec.TLCP_TLS);			
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .sslSocketFactory(ssf, new TrustAll())
+//					.connectionSpecs(specList)
                     .build();
             Request request = new Request.Builder().url(hostUrl).get().build();
             long p1 = System.currentTimeMillis();
